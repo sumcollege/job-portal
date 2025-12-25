@@ -1,0 +1,133 @@
+<%- include('../partials/header', { title: title, user: user }) %>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">💼 <%= job.title %></h1>
+            <p style="color: #4ecdc4; font-size: 1.3rem; margin: 0.5rem 0;">
+                <i class="fas fa-building"></i> 🏢 <%= job.company_name %>
+            </p>
+        </div>
+
+        <div class="job-meta" style="margin-bottom: 2rem;">
+            <span><i class="fas fa-map-marker-alt"></i> 📍 <%= job.location %></span>
+            <span><i class="fas fa-briefcase"></i> ⏰ <%= job.job_type.replace('-', ' ').toUpperCase() %></span>
+            <% if (job.salary_range) { %>
+                <span><i class="fas fa-money-bill-wave"></i> 💰 <%= job.salary_range %></span>
+            <% } %>
+            <span><i class="fas fa-calendar"></i> 📅 Posted <%= new Date(job.created_at).toLocaleDateString() %></span>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <h3><i class="fas fa-info-circle"></i> 📝 Job Description</h3>
+            <p style="line-height: 1.8; color: #555; white-space: pre-line;"><%= job.description %></p>
+        </div>
+
+        <% if (job.requirements) { %>
+            <div style="margin-bottom: 2rem;">
+                <h3><i class="fas fa-list-check"></i> ✅ Requirements</h3>
+                <p style="line-height: 1.8; color: #555; white-space: pre-line;"><%= job.requirements %></p>
+            </div>
+        <% } %>
+
+        <% if (job.company_description) { %>
+            <div style="margin-bottom: 2rem;">
+                <h3><i class="fas fa-building"></i> 🏢 About the Company</h3>
+                <p style="line-height: 1.8; color: #555;"><%= job.company_description %></p>
+            </div>
+        <% } %>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+            <% if (user && user.role === 'jobseeker') { %>
+                <% if (hasApplied) { %>
+                    <button class="btn btn-secondary" disabled>
+                        <i class="fas fa-check"></i> ✅ Already Applied
+                    </button>
+                <% } else { %>
+                    <button onclick="showApplicationModal()" class="btn btn-primary pulse">
+                        <i class="fas fa-paper-plane"></i> 🚀 Apply for this Job
+                    </button>
+                <% } %>
+            <% } else if (!user) { %>
+                <a href="/auth/login" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> 🔑 Login to Apply
+                </a>
+                <a href="/auth/register" class="btn btn-success">
+                    <i class="fas fa-user-plus"></i> ✨ Register Now
+                </a>
+            <% } %>
+            
+            <a href="/jobs" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> ⬅️ Back to Jobs
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Application Modal -->
+<% if (user && user.role === 'jobseeker' && !hasApplied) { %>
+<div id="applicationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>🚀 Apply for <%= job.title %></h3>
+            <button class="modal-close" onclick="closeApplicationModal()">&times;</button>
+        </div>
+        <form id="applicationForm">
+            <div class="form-group">
+                <label for="cover_letter">📝 Cover Letter</label>
+                <textarea id="cover_letter" name="cover_letter" class="form-control" rows="6" 
+                          placeholder="Tell us why you're perfect for this role and what makes you special..." required></textarea>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" class="btn btn-primary pulse">
+                    <i class="fas fa-paper-plane"></i> 🚀 Submit Application
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="closeApplicationModal()">
+                    ❌ Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function showApplicationModal() {
+    document.getElementById('applicationModal').classList.add('show');
+}
+
+function closeApplicationModal() {
+    document.getElementById('applicationModal').classList.remove('show');
+    document.getElementById('applicationForm').reset();
+}
+
+document.getElementById('applicationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    
+    try {
+        const response = await fetch(`/applications/apply/<%= job.id %>`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('🎉 Application submitted successfully! Good luck! 🍀');
+            location.reload();
+        } else {
+            alert('❌ ' + (result.error || 'Failed to submit application'));
+        }
+    } catch (error) {
+        alert('❌ Failed to submit application. Please try again!');
+    }
+});
+</script>
+<% } %>
+
+<%- include('../partials/footer') %>

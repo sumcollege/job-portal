@@ -1,0 +1,21 @@
+<%- include('partials/header', { title: title, user: typeof user !== 'undefined' ? user : null }) %>
+
+<div class="container">
+    <div class="card" style="text-align: center; max-width: 600px; margin: 3rem auto;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">
+            <span class="rainbow-text">🚨</span>
+        </div>
+        <h2 style="color: #333; margin-bottom: 1rem;">Oops! Something went wrong 😅</h2>
+        <p style="color: #666; font-size: 1.1rem; margin-bottom: 2rem;">📝 <%= message %></p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/" class="btn btn-primary">
+                <i class="fas fa-home"></i> 🏠 Go Home
+            </a>
+            <button onclick="history.back()" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> ⬅️ Go Back
+            </button>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

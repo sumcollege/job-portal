@@ -1,0 +1,106 @@
+<%- include('../partials/header', { title: title, user: user }) %>
+
+<section class="hero" style="padding: 4rem 0;">
+    <div class="container">
+        <h1 class="rainbow-text"><i class="fas fa-file-alt"></i> 📄 My Applications</h1>
+        <p class="fade-in">Track your job applications and their status with real-time updates! 🚀</p>
+    </div>
+</section>
+
+<div class="container">
+    <% if (applications.length === 0) { %>
+        <div class="card" style="text-align: center;">
+            <h3>📭 No applications yet</h3>
+            <p>Start applying for jobs to see your applications here! 🎯</p>
+            <a href="/jobs" class="btn btn-primary pulse">
+                <i class="fas fa-search"></i> 🔍 Browse Amazing Jobs
+            </a>
+        </div>
+    <% } else { %>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>💼 Job Title</th>
+                        <th>🏢 Company</th>
+                        <th>📊 Status</th>
+                        <th>📅 Applied Date</th>
+                        <th>⚡ Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% applications.forEach(application => { %>
+                        <tr>
+                            <td><strong>💼 <%= application.job_title %></strong></td>
+                            <td>🏢 <%= application.company_name %></td>
+                            <td>
+                                <span class="status-badge status-<%= application.status %>">
+                                    <%= application.status %>
+                                </span>
+                            </td>
+                            <td>📅 <%= new Date(application.applied_at).toLocaleDateString() %></td>
+                            <td>
+                                <button onclick="viewApplication('<%= application.job_title.replace(/'/g, "\\'") %>', '<%= application.company_name.replace(/'/g, "\\'") %>', '<%= application.cover_letter.replace(/'/g, "\\'").replace(/\n/g, "\\n") %>', '<%= application.status %>', '<%= new Date(application.applied_at).toLocaleDateString() %>')" 
+                                        class="btn btn-primary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                    <i class="fas fa-eye"></i> 👀 View Details
+                                </button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+</div>
+
+<!-- Application View Modal -->
+<div id="applicationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle">📄 Application Details</h3>
+            <button class="modal-close" onclick="closeApplicationModal()">&times;</button>
+        </div>
+        <div id="modalContent">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<script>
+function viewApplication(jobTitle, companyName, coverLetter, status, appliedDate) {
+    document.getElementById('modalTitle').textContent = `📄 Application for ${jobTitle}`;
+    
+    document.getElementById('modalContent').innerHTML = `
+        <div style="margin-bottom: 1rem;">
+            <strong>💼 Job:</strong> ${jobTitle}
+        </div>
+        <div style="margin-bottom: 1rem;">
+            <strong>🏢 Company:</strong> ${companyName}
+        </div>
+        <div style="margin-bottom: 1rem;">
+            <strong>📊 Status:</strong> 
+            <span class="status-badge status-${status}">${status}</span>
+        </div>
+        <div style="margin-bottom: 1rem;">
+            <strong>📅 Applied Date:</strong> ${appliedDate}
+        </div>
+        <div style="margin-bottom: 1rem;">
+            <strong>📝 Your Cover Letter:</strong>
+            <div style="background: linear-gradient(135deg, rgba(116, 185, 255, 0.05), rgba(9, 132, 227, 0.05)); padding: 1rem; border-radius: 12px; margin-top: 0.5rem; border-left: 4px solid #74b9ff;">
+                ${coverLetter.replace(/\n/g, '<br>')}
+            </div>
+        </div>
+        <button onclick="closeApplicationModal()" class="btn btn-secondary">
+            ❌ Close
+        </button>
+    `;
+    
+    document.getElementById('applicationModal').classList.add('show');
+}
+
+function closeApplicationModal() {
+    document.getElementById('applicationModal').classList.remove('show');
+}
+</script>
+
+<%- include('../partials/footer') %>

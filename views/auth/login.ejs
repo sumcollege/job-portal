@@ -1,0 +1,53 @@
+<%- include('../partials/header', { title: title, user: null }) %>
+
+<div class="container">
+    <div class="form-container">
+        <h2 style="text-align: center; margin-bottom: 2rem;" class="rainbow-text">
+            <i class="fas fa-sign-in-alt"></i> 🎉 Welcome Back! 🌟
+        </h2>
+
+        <% if (typeof registered !== 'undefined' && registered) { %>
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> 🎊 Registration successful! Please login with your credentials to start your journey!
+            </div>
+        <% } %>
+
+        <% if (errors.length > 0) { %>
+            <div class="alert alert-danger">
+                <% errors.forEach(error => { %>
+                    <p><i class="fas fa-exclamation-circle"></i> ⚠️ <%= error.msg %></p>
+                <% }) %>
+            </div>
+        <% } %>
+
+        <form action="/auth/login" method="POST">
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> 📧 Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" 
+                       value="<%= formData.email || '' %>" placeholder="Enter your email address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> 🔐 Password</label>
+                <input type="password" id="password" name="password" class="form-control" 
+                       placeholder="Enter your secure password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary pulse" style="width: 100%;">
+                <i class="fas fa-sign-in-alt"></i> 🚀 Login & Start Journey
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <p>Don't have an account? <a href="/auth/register" style="color: #667eea; font-weight: bold;">✨ Register here and join us!</a></p>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(116, 185, 255, 0.1), rgba(9, 132, 227, 0.1)); border-radius: 15px; border: 2px solid rgba(116, 185, 255, 0.2);">
+            <h4 style="color: #333; margin-bottom: 1rem; text-align: center;">🎯 Demo Credentials for Testing</h4>
+            <p style="margin: 0.8rem 0;"><strong>👤 Job Seeker:</strong> john@example.com / password</p>
+            <p style="margin: 0.8rem 0;"><strong>🏢 Company:</strong> hr@techsolutions.com / password</p>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

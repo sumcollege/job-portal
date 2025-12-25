@@ -1,0 +1,80 @@
+<%- include('partials/header', { title: title, user: typeof user !== 'undefined' ? user : null }) %>
+
+<section class="hero">
+    <div class="container">
+        <h1 class="fade-in rainbow-text">🚀 Find Your Dream Job in Nepal! 🌟</h1>
+        <p class="fade-in">Connecting talented professionals with leading companies across Nepal. Your next career opportunity awaits with vibrant possibilities!</p>
+        <div class="hero-buttons fade-in">
+            <a href="/jobs" class="btn btn-primary floating">
+                <i class="fas fa-search"></i> 🔍 Browse Amazing Jobs
+            </a>
+            <% if (typeof user === 'undefined' || !user) { %>
+                <a href="/auth/register" class="btn btn-secondary pulse">
+                    <i class="fas fa-user-plus"></i> 🎯 Join Our Community
+                </a>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="grid grid-3">
+        <div class="card fade-in floating">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-users" style="color: #e44608;"></i> 👥 For Job Seekers
+                </h3>
+            </div>
+            <p>Discover thousands of exciting job opportunities from top companies in Nepal. Apply with ease and track your applications in real-time!</p>
+            <a href="/jobs" class="btn btn-primary">🚀 Explore Dream Jobs</a>
+        </div>
+
+        <div class="card fade-in floating">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-building" style="color: #bb7307;"></i> 🏢 For Companies
+                </h3>
+            </div>
+            <p>Post jobs, manage applications, and find the perfect candidates for your organization. Streamline your hiring process with our advanced tools!</p>
+            <% if (typeof user !== 'undefined' && user && user.role === 'company') { %>
+                <a href="/company/dashboard" class="btn btn-success">📊 Go to Dashboard</a>
+            <% } else { %>
+                <a href="/auth/register" class="btn btn-success">🎯 Start Hiring Today</a>
+            <% } %>
+        </div>
+
+        <div class="card fade-in floating">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-handshake" style="color: #e6240b;"></i> 🤝 Equal Opportunities
+                </h3>
+            </div>
+            <p>We promote transparency, equal opportunities, and fair hiring practices for all professionals across Nepal. Join our inclusive community!</p>
+            <a href="/jobs" class="btn btn-warning">✨ Learn More</a>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top: 4rem;">
+        <div class="card-header">
+            <h2 class="card-title rainbow-text">🌟 Why Choose Elevate Workforce? 🌟</h2>
+        </div>
+        <div class="grid grid-2">
+            <div>
+                <h4><i class="fas fa-check-circle" style="color: #00b894;"></i> ✅ Verified Companies</h4>
+                <p>All companies are thoroughly verified to ensure 100% legitimate job opportunities and secure employment.</p>
+                
+                <h4><i class="fas fa-shield-alt" style="color: #667eea;"></i> 🛡️ Ultra-Secure Platform</h4>
+                <p>Your personal data is protected with military-grade security measures and advanced encryption technology.</p>
+            </div>
+            <div>
+                <h4><i class="fas fa-clock" style="color: #fdcb6e;"></i> ⚡ Real-time Updates</h4>
+                <p>Get instant notifications about new job postings and application status updates directly to your device.</p>
+                
+                <h4><i class="fas fa-chart-line" style="color: #e17055;"></i> 📈 Career Growth</h4>
+                <p>Access exclusive resources, career guidance, and professional development opportunities for exponential growth.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

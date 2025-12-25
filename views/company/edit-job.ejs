@@ -1,0 +1,71 @@
+<%- include('../partials/header', { title: title, user: user }) %>
+
+<div class="container">
+    <div class="card" style="max-width: 800px; margin: 2rem auto;">
+        <div class="card-header">
+            <h2 class="card-title rainbow-text"><i class="fas fa-edit"></i> ✏️ Edit Job</h2>
+        </div>
+
+        <% if (errors.length > 0) { %>
+            <div class="alert alert-danger">
+                <% errors.forEach(error => { %>
+                    <p><i class="fas fa-exclamation-circle"></i> ⚠️ <%= error.msg %></p>
+                <% }) %>
+            </div>
+        <% } %>
+
+        <form action="/company/jobs/<%= job.id %>/edit" method="POST">
+            <div class="form-group">
+                <label for="title"><i class="fas fa-briefcase"></i> 💼 Job Title</label>
+                <input type="text" id="title" name="title" class="form-control" 
+                       value="<%= job.title %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description"><i class="fas fa-info-circle"></i> 📝 Job Description</label>
+                <textarea id="description" name="description" class="form-control" rows="6" 
+                          required><%= job.description %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="requirements"><i class="fas fa-list-check"></i> ✅ Requirements</label>
+                <textarea id="requirements" name="requirements" class="form-control" rows="4"><%= job.requirements || '' %></textarea>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label for="location"><i class="fas fa-map-marker-alt"></i> 📍 Location</label>
+                    <input type="text" id="location" name="location" class="form-control" 
+                           value="<%= job.location %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="job_type"><i class="fas fa-clock"></i> ⏰ Job Type</label>
+                    <select id="job_type" name="job_type" class="form-control" required>
+                        <option value="full-time" <%= job.job_type === 'full-time' ? 'selected' : '' %>>⏰ Full Time</option>
+                        <option value="part-time" <%= job.job_type === 'part-time' ? 'selected' : '' %>>🕐 Part Time</option>
+                        <option value="contract" <%= job.job_type === 'contract' ? 'selected' : '' %>>📄 Contract</option>
+                        <option value="internship" <%= job.job_type === 'internship' ? 'selected' : '' %>>🎓 Internship</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="salary_range"><i class="fas fa-money-bill-wave"></i> 💰 Salary Range (Optional)</label>
+                <input type="text" id="salary_range" name="salary_range" class="form-control" 
+                       placeholder="e.g., NPR 50,000 - 80,000" value="<%= job.salary_range || '' %>">
+            </div>
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button type="submit" class="btn btn-primary pulse">
+                    <i class="fas fa-save"></i> 💾 Update Job
+                </button>
+                <a href="/company/dashboard" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> ⬅️ Back to Dashboard
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

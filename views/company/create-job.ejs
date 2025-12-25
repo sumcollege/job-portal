@@ -1,0 +1,73 @@
+<%- include('../partials/header', { title: title, user: user }) %>
+
+<div class="container">
+    <div class="card" style="max-width: 800px; margin: 2rem auto;">
+        <div class="card-header">
+            <h2 class="card-title rainbow-text"><i class="fas fa-plus"></i> ➕ Post New Amazing Job!</h2>
+        </div>
+
+        <% if (errors.length > 0) { %>
+            <div class="alert alert-danger">
+                <% errors.forEach(error => { %>
+                    <p><i class="fas fa-exclamation-circle"></i> ⚠️ <%= error.msg %></p>
+                <% }) %>
+            </div>
+        <% } %>
+
+        <form action="/company/jobs/create" method="POST">
+            <div class="form-group">
+                <label for="title"><i class="fas fa-briefcase"></i> 💼 Job Title</label>
+                <input type="text" id="title" name="title" class="form-control" 
+                       value="<%= formData.title || '' %>" placeholder="e.g., Senior Full Stack Developer" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description"><i class="fas fa-info-circle"></i> 📝 Job Description</label>
+                <textarea id="description" name="description" class="form-control" rows="6" 
+                          placeholder="Describe the role, responsibilities, and what makes this job amazing..." required><%= formData.description || '' %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="requirements"><i class="fas fa-list-check"></i> ✅ Requirements</label>
+                <textarea id="requirements" name="requirements" class="form-control" rows="4" 
+                          placeholder="List the skills, experience, and qualifications needed..."><%= formData.requirements || '' %></textarea>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label for="location"><i class="fas fa-map-marker-alt"></i> 📍 Location</label>
+                    <input type="text" id="location" name="location" class="form-control" 
+                           value="<%= formData.location || '' %>" placeholder="e.g., Kathmandu, Nepal" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="job_type"><i class="fas fa-clock"></i> ⏰ Job Type</label>
+                    <select id="job_type" name="job_type" class="form-control" required>
+                        <option value="">🤔 Select job type</option>
+                        <option value="full-time" <%= formData.job_type === 'full-time' ? 'selected' : '' %>>⏰ Full Time</option>
+                        <option value="part-time" <%= formData.job_type === 'part-time' ? 'selected' : '' %>>🕐 Part Time</option>
+                        <option value="contract" <%= formData.job_type === 'contract' ? 'selected' : '' %>>📄 Contract</option>
+                        <option value="internship" <%= formData.job_type === 'internship' ? 'selected' : '' %>>🎓 Internship</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="salary_range"><i class="fas fa-money-bill-wave"></i> 💰 Salary Range (Optional)</label>
+                <input type="text" id="salary_range" name="salary_range" class="form-control" 
+                       placeholder="e.g., NPR 50,000 - 80,000" value="<%= formData.salary_range || '' %>">
+            </div>
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button type="submit" class="btn btn-primary pulse">
+                    <i class="fas fa-plus"></i> 🚀 Post This Amazing Job
+                </button>
+                <a href="/company/dashboard" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> ⬅️ Back to Dashboard
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

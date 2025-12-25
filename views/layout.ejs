@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar container">
+            <a href="/" class="logo floating">
+                <i class="fas fa-briefcase"></i> 🚀 Elevate Workforce
+            </a>
+            <ul class="nav-links">
+                <li><a href="/"><i class="fas fa-home"></i> 🏠 Home</a></li>
+                <li><a href="/jobs"><i class="fas fa-search"></i> 🔍 Browse Jobs</a></li>
+                <% if (typeof user !== 'undefined' && user) { %>
+                    <% if (user.role === 'company') { %>
+                        <li><a href="/company/dashboard"><i class="fas fa-tachometer-alt"></i> 📊 Dashboard</a></li>
+                    <% } else { %>
+                        <li><a href="/applications/my-applications"><i class="fas fa-file-alt"></i> 📄 My Applications</a></li>
+                    <% } %>
+                    <li><a href="/auth/logout"><i class="fas fa-sign-out-alt"></i> 👋 Logout</a></li>
+                <% } else { %>
+                    <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> 🔑 Login</a></li>
+                    <li><a href="/auth/register"><i class="fas fa-user-plus"></i> ✨ Register</a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <%- body %>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Elevate Workforce Solutions. All rights reserved. 🌟</p>
+            <p>🚀 Empowering careers, connecting opportunities across Nepal with innovation and excellence! 💼✨</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>
